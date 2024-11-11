@@ -26,21 +26,57 @@ export default function AuthPage() {
         <Tabs aria-label="Options" fullWidth defaultSelectedKey={"sign-in"}>
           <Tab key="sign-in" title="Sign In" className="p-0">
             <div className="flex flex-col space-y-5  p-0">
-              <div className="flex flex-col space-y-5 mt-5 mb-3">
-                <Input label="Email" variant="bordered" />
-                <Input label="Password" variant="bordered" />
-                <Button color="primary">Sign In</Button>
-              </div>
+              <form
+                className="flex flex-col space-y-5 mt-5 mb-3"
+              >
+                <Input
+                  label="Email"
+                  name="email"
+                  type="email"
+                  autoComplete="username"
+                  variant="bordered"
+                />
+                <Input
+                  label="Password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  variant="bordered"
+                />
+                <Button color="primary" type="submit">
+                  Sign In
+                </Button>
+              </form>
             </div>
           </Tab>
           <Tab key="sign-up" title="Sign Up" className="p-0">
             <div className="flex flex-col space-y-5  p-0">
-              <div className="flex flex-col space-y-5 mt-5 mb-3">
-                <Input label="Email" variant="bordered" />
-                <Input label="Password" variant="bordered" />
-                <Input label="Confirm Password" variant="bordered" />
-                <Button color="primary">Sign Up</Button>
-              </div>
+              <form className="flex flex-col space-y-5 mt-5 mb-3">
+                <Input
+                  label="Email"
+                  name="email"
+                  type="email"
+                  autoComplete="username"
+                  variant="bordered"
+                />
+                <Input
+                  label="Password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  variant="bordered"
+                />
+                <Input
+                  label="Confirm Password"
+                  name="confirm-password"
+                  type="password"
+                  autoComplete="current-password"
+                  variant="bordered"
+                />
+                <Button color="primary" type="submit">
+                  Sign Up
+                </Button>
+              </form>
             </div>
           </Tab>
         </Tabs>
