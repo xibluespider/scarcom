@@ -1,6 +1,7 @@
 import "./globals.css";
 
 import NextArtProvider from "../components/NextArtProvider";
+import AuthSessionProvider from "@/components/AuthSessionProvider";
 
 export const metadata = {
   title: "scarcom",
@@ -8,10 +9,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body>
-        <NextArtProvider>{children}</NextArtProvider>
-      </body>
-    </html>
+    <AuthSessionProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body>
+          <NextArtProvider>{children}</NextArtProvider>
+        </body>
+      </html>
+    </AuthSessionProvider>
   );
 }
