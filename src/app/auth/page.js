@@ -5,8 +5,11 @@ import { Tabs, Tab, Input, Button } from "@nextui-org/react";
 import Image from "next/image";
 
 import AppLogo from "../../../public/bird.jpg";
+import useAuthFormEvents from "@/hooks/useAuthFormsEvents";
 
 export default function AuthPage() {
+  const { handleSignInFormSubmit } = useAuthFormEvents();
+
   return (
     <div className="min-h-screen flex justify-center items-center">
       <div className="max-w-[400px] grow min-w-[300px] min-h-[450px] p-3">
@@ -27,6 +30,8 @@ export default function AuthPage() {
           <Tab key="sign-in" title="Sign In" className="p-0">
             <div className="flex flex-col space-y-5  p-0">
               <form
+                onSubmit={handleSignInFormSubmit}
+                method="post"
                 className="flex flex-col space-y-5 mt-5 mb-3"
               >
                 <Input
