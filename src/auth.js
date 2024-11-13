@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
 import { getUserByEmail } from "./lib/db";
+import AuthCredentialsError from "./lib/AuthCredentialsError";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -12,13 +13,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       authorize: async (credentials) => {
         const { email, password } = credentials;
-        if (!email || !password) throw new Error("Missing credentials");
+        if (!email || !password)
+          throw new AuthCredentialsError("Missing Credentials");
 
         const users = await getUserByEmail(email);
-        if (!users || users.length === 0) throw new Error("User not found");
+        if (!users || users.length === 0)
+          throw new AuthCredentialsError("User not found");
 
         const [user] = users;
-        if (user.password !== password) throw new Error("Invalid credentials");
+        if (user.password !== password)
+          throw new AuthCredentialsError("Invalid Credentials");
 
         const { password: omitted, ...safeUser } = user;
         return safeUser;
