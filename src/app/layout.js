@@ -4,6 +4,8 @@ import NextArtProvider from "../components/NextArtProvider";
 import { AuthSessionProvider } from "@/components/AuthSessionProvider";
 import { auth } from "@/auth";
 
+import { Toaster } from "@/components/ui/toaster";
+
 export const metadata = {
   title: "scarcom",
 };
@@ -15,6 +17,7 @@ export default async function RootLayout({ children }) {
       <html lang="en" suppressHydrationWarning>
         <body>
           <NextArtProvider>{children}</NextArtProvider>
+          <Toaster />
         </body>
       </html>
     </AuthSessionProvider>
