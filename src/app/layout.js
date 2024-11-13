@@ -1,15 +1,17 @@
 import "./globals.css";
 
 import NextArtProvider from "../components/NextArtProvider";
-import AuthSessionProvider from "@/components/AuthSessionProvider";
+import { AuthSessionProvider } from "@/components/AuthSessionProvider";
+import { auth } from "@/auth";
 
 export const metadata = {
   title: "scarcom",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const session = await auth();
   return (
-    <AuthSessionProvider>
+    <AuthSessionProvider session={session}>
       <html lang="en" suppressHydrationWarning>
         <body>
           <NextArtProvider>{children}</NextArtProvider>
