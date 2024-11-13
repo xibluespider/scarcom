@@ -29,14 +29,14 @@ export default function useAuthFormEvents() {
     const credentials = Object.fromEntries(data);
     console.log(credentials);
 
-    // try {
-    //   const response = await handleSignIn(credentials);
-    //   console.log("useAuthFormsEvents > handleSignInForm : no error");
-    //   console.log(response);
-    // } catch (error) {
-    //   console.log("useAuthFormsEvents > handleSignInForm : error");
-    //   console.log(error);
-    // }
+    try {
+      const response = await handleSignIn(credentials);
+      console.log("useAuthFormsEvents > handleSignInForm : no error");
+      console.log(response);
+    } catch (error) {
+      console.log("useAuthFormsEvents > handleSignInForm : error");
+      console.log(error);
+    }
   };
 
   return { handleSignInFormSubmit };
