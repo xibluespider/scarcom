@@ -1,4 +1,5 @@
 import { signIn } from "next-auth/react";
+import { useToast } from "./use-toast";
 
 export function useAuthOperations() {
   const handleSignIn = async (credentials) => {
@@ -19,6 +20,7 @@ export function useAuthOperations() {
 
 export default function useAuthFormEvents() {
   const { handleSignIn } = useAuthOperations();
+  const { toast } = useToast();
 
   const handleSignInFormSubmit = async (event) => {
     event.preventDefault();
@@ -36,6 +38,7 @@ export default function useAuthFormEvents() {
     } catch (error) {
       console.log("useAuthFormsEvents > handleSignInForm : error");
       console.log(error);
+      toast({ description: "useAuthFormsEvents > handleSignInForm : error" });
     }
   };
 
