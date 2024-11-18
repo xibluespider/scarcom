@@ -15,8 +15,12 @@ export default function RootLayout({ children }) {
     <SessionProvider>
       <html lang="en" suppressHydrationWarning>
         <body>
-          <Header/>
-          <NextArtProvider>{children}</NextArtProvider>
+          <NextArtProvider>
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              {children}
+            </div>
+          </NextArtProvider>
           <Toaster />
         </body>
       </html>
