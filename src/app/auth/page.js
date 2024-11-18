@@ -11,7 +11,7 @@ export default function AuthPage() {
   const { handleSignInFormSubmit } = useAuthFormEvents();
 
   return (
-    <div className="min-h-screen flex justify-center items-center">
+    <div className="grow flex justify-center items-center">
       <div className="max-w-[400px] grow min-w-[300px] min-h-[450px] p-3">
         <div className="flex space-x-2 items-center m-2">
           <Image
