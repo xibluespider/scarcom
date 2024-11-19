@@ -19,12 +19,7 @@ export default function AuthPage() {
             alt="app-logo"
             className="max-w-[50px] rounded-large"
           />
-          <div className="text-2xl grow flex items-center justify-between">
-            <div>Scarcom</div>
-            <Button isIconOnly color="primary" variant="bordered" size="md">
-              ℹ
-            </Button>
-          </div>
+          <div className="text-2xl">Scarcom</div>
         </div>
         <Tabs aria-label="Options" fullWidth defaultSelectedKey={"sign-in"}>
           <Tab key="sign-in" title="Sign In" className="p-0">
