@@ -1,28 +1,12 @@
-import { signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 import { useToast } from "./use-toast";
-import { useRouter } from "next/navigation";
 
-export function useAuthOperations() {
-  const handleSignIn = async (credentials) => {
-    const signInParams = {
-      ...credentials,
-      redirect: false,
-    };
-
-    const response = await signIn("credentials", signInParams);
-
-    if (response.error) throw new Error(response.code);
-    return response;
-  };
-  return { handleSignIn };
-}
+import handleSignIn from "@/actions/handleSignIn";
 
 export default function useAuthEvents() {
-  const { handleSignIn } = useAuthOperations();
   const { toast } = useToast();
-
-  const router = useRouter();
+  const { update } = useSession();
 
   const handleSignInFormSubmit = async (event) => {
     event.preventDefault();
@@ -32,11 +16,14 @@ export default function useAuthEvents() {
 
     try {
       const response = await handleSignIn(credentials);
-      toast({ description: "Sign in Success !" });
-      router.push("/");
+
+      if (!response) update();
+
+      let description = "sign in success";
+      if (response?.message) description = response.message;
+      toast({ description });
     } catch (error) {
-      let description = "Unknown error. Please try again later";
-      if (error.message) description = error.message;
+      let description = "unknown error, please try again later.";
       toast({ description });
     }
   };
