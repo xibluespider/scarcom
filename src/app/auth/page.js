@@ -10,7 +10,7 @@ import AppLogo from "../../../public/bird.jpg";
 import useAuthFormEvents from "@/hooks/useAuthEvents";
 
 export default function AuthPage() {
-  const { handleSignInFormSubmit } = useAuthFormEvents();
+  const { handleSignInFormSubmit, isLoading } = useAuthFormEvents();
 
   const session = useSession();
   if (session.status == "authenticated") return null;
@@ -48,7 +48,7 @@ export default function AuthPage() {
                   autoComplete="current-password"
                   variant="bordered"
                 />
-                <Button color="primary" type="submit">
+                <Button color="primary" type="submit" isLoading={isLoading}>
                   Sign In
                 </Button>
               </form>

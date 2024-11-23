@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { useSession } from "next-auth/react";
 
 import { useToast } from "./use-toast";
@@ -8,7 +10,11 @@ export default function useAuthEvents() {
   const { toast } = useToast();
   const { update } = useSession();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleSignInFormSubmit = async (event) => {
+    setIsLoading((prev) => true);
+
     event.preventDefault();
 
     const data = new FormData(event.target);
@@ -26,7 +32,9 @@ export default function useAuthEvents() {
       let description = "unknown error, please try again later.";
       toast({ description });
     }
+
+    setIsLoading((prev) => false);
   };
 
-  return { handleSignInFormSubmit };
+  return { handleSignInFormSubmit, isLoading };
 }
