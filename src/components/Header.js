@@ -1,6 +1,6 @@
 "use client";
 
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -9,9 +9,12 @@ import { Button } from "@nextui-org/react";
 import { LogOut } from "lucide-react";
 
 import AppLogo from "../../public/bird.jpg";
+import useAuthEvents from "@/hooks/useAuthEvents";
 
 export default function Header() {
   const session = useSession();
+
+  const { handleSignOutEvent, isLoading } = useAuthEvents();
 
   if (session.status == "unauthenticated") return null;
 
@@ -35,7 +38,13 @@ export default function Header() {
         >
           About
         </Link>
-        <Button size="sm" isIconOnly color="primary" onClick={signOut}>
+        <Button
+          size="sm"
+          isIconOnly
+          color="primary"
+          onClick={handleSignOutEvent}
+          isLoading={isLoading}
+        >
           <LogOut size={12} color="black" />
         </Button>
       </div>
