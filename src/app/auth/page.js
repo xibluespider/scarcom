@@ -1,14 +1,19 @@
 "use client";
 
+import Image from "next/image";
+
 import { Tabs, Tab, Input, Button } from "@nextui-org/react";
 
-import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 import AppLogo from "../../../public/bird.jpg";
 import useAuthFormEvents from "@/hooks/useAuthEvents";
 
 export default function AuthPage() {
   const { handleSignInFormSubmit } = useAuthFormEvents();
+
+  const session = useSession();
+  if (session.status == "authenticated") return null;
 
   return (
     <div className="grow flex justify-center items-center">

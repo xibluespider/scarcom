@@ -1,17 +1,19 @@
 "use client";
 
 import { signOut, useSession } from "next-auth/react";
+
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@nextui-org/react";
 
-import { LogIn, LogOut } from "lucide-react";
+import { Button } from "@nextui-org/react";
+import { LogOut } from "lucide-react";
 
 import AppLogo from "../../public/bird.jpg";
 
 export default function Header() {
   const session = useSession();
-  const isAuthenticated = session.status === "authenticated";
+
+  if (session.status == "unauthenticated") return null;
 
   return (
     <div className="flex items-center justify-between px-3 py-2">
@@ -33,11 +35,9 @@ export default function Header() {
         >
           About
         </Link>
-        {isAuthenticated ? (
-          <Button size="sm" isIconOnly color="primary" onClick={signOut}>
-            <LogOut size={12} color="black" />
-          </Button>
-        ) : null}
+        <Button size="sm" isIconOnly color="primary" onClick={signOut}>
+          <LogOut size={12} color="black" />
+        </Button>
       </div>
     </div>
   );
