@@ -24,11 +24,11 @@ export default function useAuthEvents() {
 
       if (!response) update();
 
-      let description = "sign in success";
+      let description = "Sign-in successful!";
       if (response?.message) description = response.message;
       toast({ description });
     } catch (error) {
-      let description = "unknown error, please try again later.";
+      let description = "Unknown error. Please try again later.";
       toast({ description });
     }
     setIsLoading((prev) => false);
