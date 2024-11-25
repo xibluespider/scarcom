@@ -1,19 +1,23 @@
 "use client";
-
-import Image from "next/image";
-
-import { Tabs, Tab, Input, Button } from "@nextui-org/react";
+import { useState } from "react";
 
 import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { Tabs, Tab, Input, Button } from "@nextui-org/react";
 
 import AppLogo from "../../../public/bird.jpg";
+import { Eye, EyeClosed } from "lucide-react";
+
 import useAuthFormEvents from "@/hooks/useAuthEvents";
 
 export default function AuthPage() {
-  const { handleSignInFormSubmit, isLoading } = useAuthFormEvents();
+  const { handleSignInFormSubmit, register, errors, isLoading } =
+    useAuthFormEvents();
+
+  const [isVisible, setIsVisible] = useState(false);
 
   const session = useSession();
-  if (session.status == "authenticated") return null;
+  if (session.status === "authenticated") return null;
 
   return (
     <div className="grow flex justify-center items-center">
@@ -28,7 +32,7 @@ export default function AuthPage() {
         </div>
         <Tabs aria-label="Options" fullWidth defaultSelectedKey={"sign-in"}>
           <Tab key="sign-in" title="Sign In" className="p-0">
-            <div className="flex flex-col space-y-5  p-0">
+            <div className="flex flex-col space-y-5 p-0">
               <form
                 onSubmit={handleSignInFormSubmit}
                 method="post"
@@ -36,17 +40,32 @@ export default function AuthPage() {
               >
                 <Input
                   label="Email"
-                  name="email"
                   type="email"
                   autoComplete="username"
                   variant="bordered"
+                  {...register("email")}
+                  errorMessage={errors.email?.message}
+                  isInvalid={errors.email}
                 />
+
                 <Input
                   label="Password"
-                  name="password"
-                  type="password"
                   autoComplete="current-password"
                   variant="bordered"
+                  {...register("password")}
+                  errorMessage={errors.password?.message}
+                  isInvalid={errors.password}
+                  endContent={
+                    <Button
+                      isIconOnly
+                      size="sm"
+                      variant="light"
+                      onClick={() => setIsVisible((prev) => !prev)}
+                    >
+                      {isVisible ? <Eye /> : <EyeClosed />}
+                    </Button>
+                  }
+                  type={isVisible ? "text" : "password"}
                 />
                 <Button color="primary" type="submit" isLoading={isLoading}>
                   Sign In
@@ -55,25 +74,22 @@ export default function AuthPage() {
             </div>
           </Tab>
           <Tab key="sign-up" title="Sign Up" className="p-0">
-            <div className="flex flex-col space-y-5  p-0">
+            <div className="flex flex-col space-y-5 p-0">
               <form className="flex flex-col space-y-5 mt-5 mb-3">
                 <Input
                   label="Email"
-                  name="email"
                   type="email"
                   autoComplete="username"
                   variant="bordered"
                 />
                 <Input
                   label="Password"
-                  name="password"
                   type="password"
                   autoComplete="current-password"
                   variant="bordered"
                 />
                 <Input
                   label="Confirm Password"
-                  name="confirm-password"
                   type="password"
                   autoComplete="current-password"
                   variant="bordered"
