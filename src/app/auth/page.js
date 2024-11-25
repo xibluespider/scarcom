@@ -1,20 +1,26 @@
 "use client";
 import { useState } from "react";
-
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { Tabs, Tab, Input, Button } from "@nextui-org/react";
-
 import AppLogo from "../../../public/bird.jpg";
 import { Eye, EyeClosed } from "lucide-react";
-
 import useAuthFormEvents from "@/hooks/useAuthEvents";
 
 export default function AuthPage() {
-  const { handleSignInFormSubmit, register, errors, isLoading } =
-    useAuthFormEvents();
+  const {
+    handleSignInFormSubmit,
+    handleSignUpFormSubmit,
+    signInRegister,
+    signUpRegister,
+    signInErrors,
+    signUpErrors,
+    isLoading,
+  } = useAuthFormEvents();
 
-  const [isVisible, setIsVisible] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
+    useState(false);
 
   const session = useSession();
   if (session.status === "authenticated") return null;
@@ -43,29 +49,28 @@ export default function AuthPage() {
                   type="email"
                   autoComplete="username"
                   variant="bordered"
-                  {...register("email")}
-                  errorMessage={errors.email?.message}
-                  isInvalid={errors.email}
+                  {...signInRegister("email")}
+                  errorMessage={signInErrors.email?.message}
+                  isInvalid={signInErrors.email}
                 />
-
                 <Input
                   label="Password"
                   autoComplete="current-password"
                   variant="bordered"
-                  {...register("password")}
-                  errorMessage={errors.password?.message}
-                  isInvalid={errors.password}
+                  {...signInRegister("password")}
+                  errorMessage={signInErrors.password?.message}
+                  isInvalid={signInErrors.password}
                   endContent={
                     <Button
                       isIconOnly
                       size="sm"
                       variant="light"
-                      onClick={() => setIsVisible((prev) => !prev)}
+                      onClick={() => setIsPasswordVisible((prev) => !prev)}
                     >
-                      {isVisible ? <Eye /> : <EyeClosed />}
+                      {isPasswordVisible ? <Eye /> : <EyeClosed />}
                     </Button>
                   }
-                  type={isVisible ? "text" : "password"}
+                  type={isPasswordVisible ? "text" : "password"}
                 />
                 <Button color="primary" type="submit" isLoading={isLoading}>
                   Sign In
@@ -73,28 +78,64 @@ export default function AuthPage() {
               </form>
             </div>
           </Tab>
+
           <Tab key="sign-up" title="Sign Up" className="p-0">
             <div className="flex flex-col space-y-5 p-0">
-              <form className="flex flex-col space-y-5 mt-5 mb-3">
+              <form
+                onSubmit={handleSignUpFormSubmit}
+                method="post"
+                className="flex flex-col space-y-5 mt-5 mb-3"
+              >
                 <Input
                   label="Email"
                   type="email"
                   autoComplete="username"
                   variant="bordered"
+                  {...signUpRegister("email")}
+                  errorMessage={signUpErrors.email?.message}
+                  isInvalid={signUpErrors.email}
                 />
                 <Input
                   label="Password"
-                  type="password"
                   autoComplete="current-password"
                   variant="bordered"
+                  {...signUpRegister("password")}
+                  errorMessage={signUpErrors.password?.message}
+                  isInvalid={signUpErrors.password}
+                  endContent={
+                    <Button
+                      isIconOnly
+                      size="sm"
+                      variant="light"
+                      onClick={() => setIsPasswordVisible((prev) => !prev)}
+                    >
+                      {isPasswordVisible ? <Eye /> : <EyeClosed />}
+                    </Button>
+                  }
+                  type={isPasswordVisible ? "text" : "password"}
                 />
                 <Input
                   label="Confirm Password"
-                  type="password"
                   autoComplete="current-password"
                   variant="bordered"
+                  {...signUpRegister("confirmPassword")}
+                  errorMessage={signUpErrors.confirmPassword?.message}
+                  isInvalid={signUpErrors.confirmPassword}
+                  endContent={
+                    <Button
+                      isIconOnly
+                      size="sm"
+                      variant="light"
+                      onClick={() =>
+                        setIsConfirmPasswordVisible((prev) => !prev)
+                      }
+                    >
+                      {isConfirmPasswordVisible ? <Eye /> : <EyeClosed />}
+                    </Button>
+                  }
+                  type={isConfirmPasswordVisible ? "text" : "password"}
                 />
-                <Button color="primary" type="submit">
+                <Button color="primary" type="submit" isLoading={isLoading}>
                   Sign Up
                 </Button>
               </form>
