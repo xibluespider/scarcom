@@ -10,10 +10,10 @@ export const db = drizzle(pool);
 
 export async function getUserByEmail(email) {
   try {
-    const result = await db.select().from(users).where(eq(users.email, email));
-    return result;
+    const iusers = await db.select().from(users).where(eq(users.email, email));
+    const [user] = iusers;
+    return user;
   } catch (error) {
-    const ierror = { message: "error at getUserByEmail" };
-    throw new Error(ierror);
+    throw new Error("DatabaseError");
   }
 }
