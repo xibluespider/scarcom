@@ -13,19 +13,29 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       authorize: async (credentials) => {
         const { email, password } = credentials;
+
         if (!email || !password)
           throw new AuthCredentialsError("Missing Credentials");
 
-        const users = await getUserByEmail(email);
-        if (!users || users.length === 0)
-          throw new AuthCredentialsError("User not found");
+        try {
+          let user = await getUserByEmail(email);
 
-        const [user] = users;
-        if (user.password !== password)
-          throw new AuthCredentialsError("Invalid Credentials");
+          if (!user) {
+            const message = "User not found";
+            throw new AuthCredentialsError(message);
+          }
 
-        const { password: omitted, ...safeUser } = user;
-        return safeUser;
+          if (user.password !== password) {
+            const message = "Invalid credentials";
+            throw new AuthCredentialsError(message);
+          }
+
+          const { password: omitted, ...safeUser } = user;
+          return safeUser;
+        } catch (error) {
+          const message = "Internal server error. Please try again later";
+          throw new AuthCredentialsError(message);
+        }
       },
     }),
   ],
