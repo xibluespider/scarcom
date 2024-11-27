@@ -17,11 +17,17 @@ export default async function handleSignIn(credentials) {
   } catch (error) {
     if (isRedirectError(error)) throw error;
 
-    const response = {
-      ok: false,
-      message: "Internal server error. Please try again later",
-    };
+    if (!error?.message)
+      return {
+        ok: false,
+        message: "Internal server error. Please try again later",
+      };
 
-    return response;
+    if (error?.message) {
+      return {
+        ok: false,
+        message: error.message,
+      };
+    }
   }
 }
