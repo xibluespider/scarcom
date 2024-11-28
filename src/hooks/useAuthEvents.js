@@ -49,6 +49,7 @@ export default function useAuthEvents() {
   const {
     register: signUpRegister,
     handleSubmit: signUpHandleSubmit,
+    reset,
     formState: { errors: signUpErrors },
   } = useForm({
     resolver: zodResolver(signUpSchema),
@@ -82,6 +83,8 @@ export default function useAuthEvents() {
 
       const description =
         response?.message || "User account created. Please sign in";
+
+      reset();
       toast({ description });
     } catch (error) {
       const description = "Unknown error. Please try again later.";
