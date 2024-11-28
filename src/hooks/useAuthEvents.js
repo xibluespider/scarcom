@@ -80,7 +80,8 @@ export default function useAuthEvents() {
     try {
       const response = await handleSignUp(credentials);
 
-      const description = response?.message || "Sign-up successful!";
+      const description =
+        response?.message || "User account created. Please sign in";
       toast({ description });
     } catch (error) {
       const description = "Unknown error. Please try again later.";
