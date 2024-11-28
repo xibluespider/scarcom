@@ -17,3 +17,12 @@ export async function getUserByEmail(email) {
     throw new Error("DatabaseError");
   }
 }
+
+export async function addUser(credentials) {
+  try {
+    return await db.insert(users).values(credentials);
+  } catch (error) {
+    console.log(error);
+    throw new Error("DatabaseError");
+  }
+}
