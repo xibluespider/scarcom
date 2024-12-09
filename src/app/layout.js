@@ -1,8 +1,12 @@
 import "./globals.css";
 
+import { Toaster } from "@/components/ui/sonner";
+import { SidebarProvider } from "@/components/ui/sidebar";
+
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { SessionProvider } from "@/components/SessionProvider";
-import { Toaster } from "@/components/ui/sonner";
+
+import { AppSidebar } from "@/components/AppSidebar";
 
 export const metadata = {
   title: "Scarcom",
@@ -14,8 +18,11 @@ export default function RootLayout({ children }) {
       <html lang="en" suppressHydrationWarning>
         <body>
           <ThemeProvider attribute="class" defaultTheme="dark">
-            {children}
-            <Toaster />
+            <SidebarProvider>
+              <AppSidebar />
+              {children}
+              <Toaster />
+            </SidebarProvider>
           </ThemeProvider>
         </body>
       </html>

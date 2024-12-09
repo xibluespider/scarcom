@@ -1,11 +1,11 @@
-import { db } from "@/lib/db";
+"use client";
 
-async function getData() {
-  const response = await db.execute("select version()");
-  return response[0].version;
-}
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
-export default async function Page() {
-  const data = await getData();
-  return <>{data}</>;
+export default function Page() {
+  return (
+    <div className="grow m-2 border rounded-lg">
+      <SidebarTrigger />
+    </div>
+  );
 }
