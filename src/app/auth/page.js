@@ -33,7 +33,7 @@ export default function Page() {
   if (session.status === "authenticated") return null;
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
+    <div className="absolute z-10 bg-black w-full min-h-screen flex flex-col items-center justify-center">
       <Tabs defaultValue="signin" className="w-full max-w-[400px] p-2">
         <TabsList className="w-full justify-evenly">
           <TabsTrigger value="signin" className="grow">
