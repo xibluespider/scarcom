@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
       <html lang="en" suppressHydrationWarning>
         <body>
           <ThemeProvider attribute="class" defaultTheme="dark">
-            <SidebarProvider>
+            <SidebarProvider style={{ "--sidebar-width": "8rem" }}>
               <AppSidebar />
               {children}
               <Toaster />
