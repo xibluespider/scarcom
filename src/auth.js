@@ -4,6 +4,8 @@ import Credentials from "next-auth/providers/credentials";
 import { getUserByEmail } from "./lib/db";
 import AuthCredentialsError from "./lib/AuthCredentialsError";
 
+import bcrypt from "bcryptjs";
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
@@ -26,8 +28,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         if (!iuser) throw new AuthCredentialsError("User not found");
 
-        if (iuser.password !== password)
-          throw new AuthCredentialsError("Invalid credentials");
+        const isMatch = await bcrypt.compare(password, iuser.password);
+        if (!isMatch) throw new AuthCredentialsError("Invalid credentials");
 
         const { password: omitted, ...safeUser } = iuser;
         return safeUser;
