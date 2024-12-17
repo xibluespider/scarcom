@@ -1,11 +1,13 @@
-import { db } from "@/lib/db";
+"use client";
 
-async function getData() {
-  const response = await db.execute("select version()");
-  return response[0].version;
-}
+import { useSession } from "next-auth/react";
 
-export default async function Page() {
-  const data = await getData();
-  return <>{data}</>;
+export default function Page() {
+  const session = useSession();
+
+  return (
+    <div>
+      <div>{JSON.stringify(session)}</div>
+    </div>
+  );
 }
