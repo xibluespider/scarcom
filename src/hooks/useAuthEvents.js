@@ -10,7 +10,11 @@ import handleSignIn from "@/actions/handleSignIn";
 
 import { signUpSchema, signInSchema } from "@/lib/zod-schema";
 
+import { useSession } from "next-auth/react";
+
 export default function useAuthEvents() {
+  const { update } = useSession();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -50,6 +54,7 @@ export default function useAuthEvents() {
     // only incase of failure, response has ok attribute. 
     if (!response?.ok) if (response?.message) toast(response.message);
 
+    update();
     setIsLoading((prev) => false);
   };
 
