@@ -16,8 +16,15 @@ import { Button } from "@/components/ui/button";
 import { Loader2 as LoadingIcon } from "lucide-react";
 
 export default function Page() {
-  const { handleSignUpFormSubmit, signUpRegister, signUpErrors, isLoading } =
-    useAuthEvents();
+  const {
+    handleSignUpFormSubmit,
+    signUpRegister,
+    signUpErrors,
+    handleSignInFormSubmit,
+    signInRegister,
+    signInErrors,
+    isLoading,
+  } = useAuthEvents();
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center">
@@ -31,24 +38,41 @@ export default function Page() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="signin">
-          <Card>
-            <CardHeader>
-              <CardTitle>Sign in</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="space-y-1">
-                <Label htmlFor="name">Email</Label>
-                <Input id="email" type="email" />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="password">Password</Label>
-                <Input id="password" type="password" />
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button className="grow">Sign in</Button>
-            </CardFooter>
-          </Card>
+          <form onSubmit={handleSignInFormSubmit}>
+            <Card>
+              <CardHeader>
+                <CardTitle>Sign in</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="space-y-1">
+                  <Label htmlFor="name">Email</Label>
+                  <Input
+                    name="email"
+                    type="email"
+                    {...signInRegister("email")}
+                    autoComplete="username"
+                    error={signInErrors.email?.message}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    name="password"
+                    type="password"
+                    {...signInRegister("password")}
+                    autoComplete="current-password"
+                    error={signInErrors.password?.message}
+                  />
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button className="grow" type="submit">
+                  {isLoading ? <LoadingIcon className="animate-spin" /> : null}
+                  Sign in
+                </Button>
+              </CardFooter>
+            </Card>
+          </form>
         </TabsContent>
         <TabsContent value="signup">
           <form onSubmit={handleSignUpFormSubmit}>
