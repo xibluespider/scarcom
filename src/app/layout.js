@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { SessionProvider } from "@/components/SessionProvider";
 
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/AppSidebar";
 
 export const metadata = {
   title: "Scarcom",
@@ -16,7 +17,8 @@ export default function RootLayout({ children }) {
       <html lang="en" suppressHydrationWarning>
         <body>
           <ThemeProvider attribute="class" defaultTheme="dark">
-            <SidebarProvider>
+            <SidebarProvider style={{ "--sidebar-width": "8rem" }}>
+              <AppSidebar />
               {children}
               <Toaster />
             </SidebarProvider>
