@@ -48,11 +48,15 @@ export function AppSidebar() {
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild className="mx-auto mt-1" size="lg">
+                  <SidebarMenuButton
+                    asChild
+                    size="lg"
+                    tooltip={{ children: "Home", sideOffset: 15 }}
+                  >
                     <Link href="/">
                       <Image
                         src={AppLogo}
-                        className="size-6 rounded-sm"
+                        className="size-6 ml-1 rounded-sm"
                         alt="applogo"
                       />
                       <p>Home</p>
@@ -66,7 +70,10 @@ export function AppSidebar() {
         <SidebarFooter>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
+              <SidebarMenuButton
+                asChild
+                tooltip={{ children: "About", sideOffset: 15 }}
+              >
                 <Link href="/about">
                   <AboutIcon />
                   <p>About</p>
@@ -77,6 +84,7 @@ export function AppSidebar() {
               <SidebarMenuButton
                 onClick={handleSignOutEvent}
                 className={session.status === "unauthenticated" ? "hidden" : ""}
+                tooltip={{ children: "Sign out", sideOffset: 15 }}
               >
                 <LoadingIcon
                   className={
