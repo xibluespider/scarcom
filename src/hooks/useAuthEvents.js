@@ -47,7 +47,8 @@ export default function useAuthEvents() {
 
     const response = await handleSignIn(credentials);
 
-    if (!response.ok) if (response?.message) toast(response.message);
+    // only incase of failure, response has ok attribute. 
+    if (!response?.ok) if (response?.message) toast(response.message);
 
     setIsLoading((prev) => false);
   };
