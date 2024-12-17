@@ -27,7 +27,7 @@ export default function Page() {
   } = useAuthEvents();
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
+    <div className="grow flex flex-col items-center justify-center">
       <Tabs defaultValue="signin" className="w-full max-w-[400px] p-2">
         <TabsList className="w-full justify-evenly">
           <TabsTrigger value="signin" className="grow">
