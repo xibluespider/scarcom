@@ -10,7 +10,7 @@ import handleSignIn from "@/actions/handleSignIn";
 
 import { signUpSchema, signInSchema } from "@/lib/zod-schema";
 
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
 export default function useAuthEvents() {
   const { update } = useSession();
@@ -58,6 +58,23 @@ export default function useAuthEvents() {
     setIsLoading((prev) => false);
   };
 
+  const handleSignOutEvent = async (event) => {
+    event.preventDefault();
+    setIsLoading((prev) => true);
+
+    const handleSignOutError = (error) => {
+      console.log("useAuthEvents/handleSignOutEvent : error caught ");
+
+      const message = "error in signing out. please try again later.";
+      toast(message);
+
+      setIsLoading((prev) => false);
+    };
+    await signOut().catch(handleSignOutError);
+
+    setIsLoading((prev) => false);
+  };
+
   return {
     handleSignUpFormSubmit: signUpHandleSubmit(handleSignUpFormSubmit),
     signUpRegister,
@@ -66,6 +83,8 @@ export default function useAuthEvents() {
     handleSignInFormSubmit: signInHandleSubmit(handleSignInFormSubmit),
     signInRegister,
     signInErrors,
+
+    handleSignOutEvent,
 
     isLoading,
   };
