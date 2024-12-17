@@ -14,7 +14,9 @@ export default async function handleSignIn(credentials) {
 
     return {
       ok: false,
-      message: error?.message,
+      message:
+        error?.cause?.err?.message ||
+        "Internal server error. Please try again later.",
     };
   };
 
