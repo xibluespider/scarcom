@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
 import { getUserByEmail } from "./lib/db";
+import bcrypt from "bcryptjs";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -24,7 +25,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         if (!iuser) throw new Error("User not found");
 
-        if (iuser.password !== password) throw new Error("Invalid credentials");
+        const isMatch = await bcrypt.compare(password, iuser.password);
+        if (!isMatch) throw new Error("Invalid credentials");
 
         const { password: omitted, ...safeUser } = iuser;
         return safeUser;
