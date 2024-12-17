@@ -66,7 +66,7 @@ export default function Page() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="grow" type="submit">
+                <Button className="grow" type="submit" disabled={isLoading}>
                   {isLoading ? <LoadingIcon className="animate-spin" /> : null}
                   Sign in
                 </Button>
@@ -123,7 +123,7 @@ export default function Page() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="grow" type="submit">
+                <Button className="grow" type="submit" disabled={isLoading}>
                   {isLoading ? <LoadingIcon className="animate-spin" /> : null}
                   Sign up
                 </Button>
