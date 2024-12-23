@@ -5,27 +5,26 @@ import { signIn } from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect";
 
 export default async function handleSignIn(credentials) {
-  const signInParams = {
-    ...credentials,
-    redirect: true,
-    redirectTo: "/",
-  };
+	const signInParams = {
+		...credentials,
+		redirect: true,
+		redirectTo: "/",
+	};
 
-  const handleSignInError = (error) => {
-    console.log("handleSignInError : error caught");
+	try {
+		const response = await signIn("credentials", signInParams);
+		return response;
+	} catch (error) {
+		if (isRedirectError(error)) throw error;
 
-    if (isRedirectError(error)) throw error;
+		let message = "Internal server error. Please try again later.";
+		if (error.name === "InvalidSignInError") message = error.code;
 
-    return {
-      ok: false,
-      message:
-        error?.cause?.err?.message ||
-        "Internal server error. Please try again later.",
-    };
-  };
+		const response = {
+			ok: false,
+			message,
+		};
 
-  const response = await signIn("credentials", signInParams).catch(
-    handleSignInError
-  );
-  return response;
+		return response;
+	}
 }
