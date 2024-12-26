@@ -31,17 +31,11 @@ import useAuthEvents from "@/hooks/useAuthEvents";
 export function AppSidebar() {
 	const { isLoading, handleSignOutEvent } = useAuthEvents();
 
-	const { isMobile } = useSidebar();
-
 	const session = useSession();
 	const statusIsLoading = isLoading || session.status === "loading";
 
 	return (
 		<div>
-			<SidebarTrigger
-				variant="outline"
-				className={!isMobile ? "hidden" : "absolute top-1 left-1 size-10"}
-			/>
 			<Sidebar variant="floating" collapsible="icon">
 				<SidebarContent>
 					<SidebarGroup>
