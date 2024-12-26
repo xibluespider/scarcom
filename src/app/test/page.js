@@ -2,6 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
+// this line causes error 'net'
+// import { searchUser } from "@/lib/db";
+
+// instead use the querySearch function present in this file. 
+// go to src/api/searchUser/route.js
+
 import useSearchEvents from "@/hooks/useSearchEvents";
 
 export default function Page() {
