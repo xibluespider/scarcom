@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Loader2 as LoadingIcon } from "lucide-react";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function Page() {
 	const {
@@ -28,6 +29,7 @@ export default function Page() {
 
 	return (
 		<div className="grow flex flex-col items-center justify-center">
+			<SidebarTrigger className="absolute top-1 left-1" />
 			<Tabs defaultValue="signin" className="w-full max-w-[400px] p-2">
 				<TabsList className="w-full justify-evenly">
 					<TabsTrigger value="signin" className="grow">
