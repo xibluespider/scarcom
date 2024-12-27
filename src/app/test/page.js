@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 // import { searchUser } from "@/lib/db";
 
 // instead use the querySearch function present in this file. 
-// go to src/api/searchUser/route.js
+// go to src/app/api/searchUser/route.js
 
 import useSearchEvents from "@/hooks/useSearchEvents";
 
