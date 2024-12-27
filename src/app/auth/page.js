@@ -45,9 +45,10 @@ export default function Page() {
 							</CardHeader>
 							<CardContent className="space-y-2">
 								<div className="space-y-1">
-									<Label htmlFor="name">Email</Label>
+									<Label htmlFor="email">Email</Label>
 									<Input
 										name="email"
+										id="email"
 										type="email"
 										{...signInRegister("email")}
 										autoComplete="username"
@@ -58,6 +59,7 @@ export default function Page() {
 									<Label htmlFor="password">Password</Label>
 									<Input
 										name="password"
+										id="password"
 										type="password"
 										{...signInRegister("password")}
 										autoComplete="current-password"
@@ -85,6 +87,7 @@ export default function Page() {
 									<Label htmlFor="name">Name</Label>
 									<Input
 										name="name"
+										id="name"
 										type="text"
 										{...signUpRegister("name")}
 										autoComplete="username"
@@ -95,6 +98,7 @@ export default function Page() {
 									<Label htmlFor="email">Email</Label>
 									<Input
 										name="email"
+										id="email"
 										type="email"
 										{...signUpRegister("email")}
 										autoComplete="username"
@@ -105,6 +109,7 @@ export default function Page() {
 									<Label htmlFor="password">Password</Label>
 									<Input
 										name="password"
+										id="password"
 										type="password"
 										{...signUpRegister("password")}
 										autoComplete="current-password"
@@ -115,6 +120,7 @@ export default function Page() {
 									<Label htmlFor="confirmPassword">Confirm Password</Label>
 									<Input
 										name="confirm-password"
+										id="confirm-password"
 										type="password"
 										{...signUpRegister("confirmPassword")}
 										autoComplete="current-password"
