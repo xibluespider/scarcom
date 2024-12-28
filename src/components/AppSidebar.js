@@ -52,6 +52,7 @@ export function AppSidebar() {
 												src={AppLogo}
 												className="size-6 ml-1 rounded-sm"
 												alt="applogo"
+												priority
 											/>
 											<p>Home</p>
 										</Link>
