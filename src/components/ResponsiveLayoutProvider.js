@@ -28,7 +28,7 @@ export default function ResponsiveLayoutProvider({ children }) {
 	}
 
 	return (
-		<div className="grow flex m-2 gap-2">
+		<div className="grow flex gap-2 max-h-screen p-2">
 			<div className={cn(activityPanelResponsive)}>
 				<ActivityPanel />
 			</div>

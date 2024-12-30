@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ScrollArea } from "./ui/scroll-area";
 
 import {
 	Globe as GlobeIcon,
@@ -56,7 +57,7 @@ export default function ActivityPanel() {
 				/>
 			</form>
 
-			<div className="grow border rounded-lg flex flex-col space-y-2 px-1">
+			<div className="grow border rounded-lg flex flex-col space-y-2 px-1 overflow-hidden">
 				<VisibilityWrapper isHide={showSearchResults || searchResultsIsLoading}>
 					<div className="py-2 px-1 mx-auto">🚧 Conversations 🚧</div>
 				</VisibilityWrapper>
@@ -85,11 +86,13 @@ export default function ActivityPanel() {
 					isHide={!showSearchResults || searchResultsIsLoading}
 				>
 					<VisibilityWrapper isHide={!searchResults.length}>
-						<div className="flex flex-col space-y-3 py-2">
-							{searchResults?.map((user, index) => (
-								<UserCard key={index} user={user} />
-							))}
-						</div>
+						<ScrollArea className="h-full">
+							<div className="flex flex-col space-y-3 py-2">
+								{searchResults?.map((user, index) => (
+									<UserCard key={index} user={user} />
+								))}
+							</div>
+						</ScrollArea>
 					</VisibilityWrapper>
 
 					<VisibilityWrapper isHide={searchResults.length}>
