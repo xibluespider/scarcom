@@ -14,7 +14,9 @@ const Input = React.forwardRef(({ className, type, error, ...props }, ref) => {
 				ref={ref}
 				{...props}
 			/>
-			<p className="text-sm text-red-600">{error ? error : null}</p>
+			<p className="text-xs text-red-600 leading-none tracking-tight">
+				{error ? error : null}
+			</p>
 		</>
 	);
 });
