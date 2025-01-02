@@ -37,7 +37,15 @@ export default function useAuthEvents() {
 	const handleSignUpFormSubmit = async (credentials) => {
 		setIsLoading((prev) => true);
 
-		const response = await handleSignUp(credentials);
+		let response = null;
+		try {
+			response = await handleSignUp(credentials);
+		} catch (error) {
+			toast("Error. Please try again later.");
+
+			setIsLoading((prev) => false);
+			return;
+		}
 
 		if (response.ok) reset();
 
@@ -49,7 +57,14 @@ export default function useAuthEvents() {
 	const handleSignInFormSubmit = async (credentials) => {
 		setIsLoading((prev) => true);
 
-		const response = await handleSignIn(credentials);
+		let response = null;
+		try {
+			response = await handleSignIn(credentials);
+		} catch (error) {
+			toast("Error. Please try again later.");
+			setIsLoading((prev) => false);
+			return;
+		}
 
 		// only incase of failure, response has ok attribute.
 		if (!response?.ok) if (response?.message) toast(response.message);
@@ -62,15 +77,11 @@ export default function useAuthEvents() {
 		event.preventDefault();
 		setIsLoading((prev) => true);
 
-		const handleSignOutError = (error) => {
-			console.log("useAuthEvents/handleSignOutEvent : error caught ");
-
-			const message = "error in signing out. please try again later.";
-			toast(message);
-
-			setIsLoading((prev) => false);
-		};
-		await signOut().catch(handleSignOutError);
+		try {
+			await signOut();
+		} catch (error) {
+			toast("Error. Please try again later");
+		}
 
 		setIsLoading((prev) => false);
 	};
