@@ -13,79 +13,79 @@ import { signUpSchema, signInSchema } from "@/lib/zod-schema";
 import { useSession, signOut } from "next-auth/react";
 
 export default function useAuthEvents() {
-  const { update } = useSession();
+	const { update } = useSession();
 
-  const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 
-  const {
-    register: signUpRegister,
-    handleSubmit: signUpHandleSubmit,
-    reset,
-    formState: { errors: signUpErrors },
-  } = useForm({
-    resolver: zodResolver(signUpSchema),
-  });
+	const {
+		register: signUpRegister,
+		handleSubmit: signUpHandleSubmit,
+		reset,
+		formState: { errors: signUpErrors },
+	} = useForm({
+		resolver: zodResolver(signUpSchema),
+	});
 
-  const {
-    register: signInRegister,
-    handleSubmit: signInHandleSubmit,
-    formState: { errors: signInErrors },
-  } = useForm({
-    resolver: zodResolver(signInSchema),
-  });
+	const {
+		register: signInRegister,
+		handleSubmit: signInHandleSubmit,
+		formState: { errors: signInErrors },
+	} = useForm({
+		resolver: zodResolver(signInSchema),
+	});
 
-  const handleSignUpFormSubmit = async (credentials) => {
-    setIsLoading((prev) => true);
+	const handleSignUpFormSubmit = async (credentials) => {
+		setIsLoading((prev) => true);
 
-    const response = await handleSignUp(credentials);
+		const response = await handleSignUp(credentials);
 
-    if (response.ok) reset();
+		if (response.ok) reset();
 
-    toast(response.message);
+		toast(response.message);
 
-    setIsLoading((prev) => false);
-  };
+		setIsLoading((prev) => false);
+	};
 
-  const handleSignInFormSubmit = async (credentials) => {
-    setIsLoading((prev) => true);
+	const handleSignInFormSubmit = async (credentials) => {
+		setIsLoading((prev) => true);
 
-    const response = await handleSignIn(credentials);
+		const response = await handleSignIn(credentials);
 
-    // only incase of failure, response has ok attribute. 
-    if (!response?.ok) if (response?.message) toast(response.message);
+		// only incase of failure, response has ok attribute.
+		if (!response?.ok) if (response?.message) toast(response.message);
 
-    update();
-    setIsLoading((prev) => false);
-  };
+		update();
+		setIsLoading((prev) => false);
+	};
 
-  const handleSignOutEvent = async (event) => {
-    event.preventDefault();
-    setIsLoading((prev) => true);
+	const handleSignOutEvent = async (event) => {
+		event.preventDefault();
+		setIsLoading((prev) => true);
 
-    const handleSignOutError = (error) => {
-      console.log("useAuthEvents/handleSignOutEvent : error caught ");
+		const handleSignOutError = (error) => {
+			console.log("useAuthEvents/handleSignOutEvent : error caught ");
 
-      const message = "error in signing out. please try again later.";
-      toast(message);
+			const message = "error in signing out. please try again later.";
+			toast(message);
 
-      setIsLoading((prev) => false);
-    };
-    await signOut().catch(handleSignOutError);
+			setIsLoading((prev) => false);
+		};
+		await signOut().catch(handleSignOutError);
 
-    setIsLoading((prev) => false);
-  };
+		setIsLoading((prev) => false);
+	};
 
-  return {
-    handleSignUpFormSubmit: signUpHandleSubmit(handleSignUpFormSubmit),
-    signUpRegister,
-    signUpErrors,
+	return {
+		handleSignUpFormSubmit: signUpHandleSubmit(handleSignUpFormSubmit),
+		signUpRegister,
+		signUpErrors,
 
-    handleSignInFormSubmit: signInHandleSubmit(handleSignInFormSubmit),
-    signInRegister,
-    signInErrors,
+		handleSignInFormSubmit: signInHandleSubmit(handleSignInFormSubmit),
+		signInRegister,
+		signInErrors,
 
-    handleSignOutEvent,
+		handleSignOutEvent,
 
-    isLoading,
-  };
+		isLoading,
+	};
 }
