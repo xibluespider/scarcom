@@ -40,7 +40,7 @@ export default function Page() {
 					</TabsTrigger>
 				</TabsList>
 				<TabsContent value="signin">
-					<form onSubmit={handleSignInFormSubmit}>
+					<form onSubmit={handleSignInFormSubmit} method="post">
 						<Card>
 							<CardHeader>
 								<CardTitle>Sign in</CardTitle>
@@ -79,7 +79,7 @@ export default function Page() {
 					</form>
 				</TabsContent>
 				<TabsContent value="signup">
-					<form onSubmit={handleSignUpFormSubmit}>
+					<form onSubmit={handleSignUpFormSubmit} method="post">
 						<Card>
 							<CardHeader>
 								<CardTitle>Sign up</CardTitle>
