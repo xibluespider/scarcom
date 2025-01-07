@@ -86,14 +86,14 @@ export default function Page() {
 							</CardHeader>
 							<CardContent className="space-y-2">
 								<div className="space-y-1">
-									<Label htmlFor="name">Name</Label>
+									<Label htmlFor="username">Username</Label>
 									<Input
-										name="name"
-										id="name"
+										name="username"
+										id="username"
 										type="text"
-										{...signUpRegister("name")}
+										{...signUpRegister("username")}
 										autoComplete="username"
-										error={signUpErrors.name?.message}
+										error={signUpErrors.username?.message}
 									/>
 								</div>
 								<div className="space-y-1">
