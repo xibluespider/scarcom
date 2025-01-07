@@ -29,7 +29,7 @@ export default function UserInfoCard({ session, ...props }) {
 					<UserIcon className="shrink-0" />
 					<div className="flex flex-col">
 						<div className="font-medium	leading-none tracking-tight">
-							{session?.data?.user?.name}
+							{session?.data?.user?.username}
 						</div>
 						<div className="text-xs text-muted-foreground">
 							{session?.data?.user?.email}
