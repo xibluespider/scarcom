@@ -6,6 +6,12 @@ import bcrypt from "bcryptjs";
 export default async function handleSignUp(credentials) {
 	const { name, email, password, confirmPassword } = credentials;
 
+	if (password !== confirmPassword)
+		return {
+			ok: false,
+			message: "Passwords do not match. Please sign up again",
+		};
+
 	let iuser = null;
 	try {
 		iuser = await getUserByEmail(email);
@@ -20,12 +26,6 @@ export default async function handleSignUp(credentials) {
 		return {
 			ok: false,
 			message: "User already exists. Please sign in",
-		};
-
-	if (password !== confirmPassword)
-		return {
-			ok: false,
-			message: "Passwords do not match. Please sign up again",
 		};
 
 	const saltRounds = parseInt(process.env.SALT_ROUNDS);
