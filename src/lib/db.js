@@ -36,3 +36,31 @@ export async function searchUser(query) {
 
 	return iusers;
 }
+
+export async function addMessageToGlobal(payload) {
+	await db.insert(schema.globalMessages).values(payload).onConflictDoUpdate({
+		target: schema.globalMessages.id,
+		set: payload,
+	});
+}
+
+export async function getGlobalMessages() {
+	const initialGlobalMessages = await db
+
+		.select({
+			username: schema.users.username,
+			message: schema.globalMessages.message,
+			createdAt: schema.globalMessages.createdAt,
+		})
+
+		.from(schema.globalMessages)
+
+		.innerJoin(
+			schema.users,
+			orm.eq(schema.globalMessages.userId, schema.users.id)
+		)
+
+		.orderBy(orm.asc(schema.globalMessages.createdAt));
+
+	return initialGlobalMessages;
+}
