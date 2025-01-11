@@ -2,11 +2,13 @@
 
 import { usePathname } from "next/navigation";
 
-import { cn } from "@/lib/utils";
+import { cn, VisibilityWrapper } from "@/lib/utils";
 
 import ActivityPanel from "./ActivityPanel";
+import { useSession } from "next-auth/react";
 
 export default function ResponsiveLayoutProvider({ children }) {
+	const session = useSession();
 	const pathname = usePathname();
 
 	let activityPanelResponsive = "";
@@ -29,9 +31,11 @@ export default function ResponsiveLayoutProvider({ children }) {
 
 	return (
 		<div className="grow flex gap-2 max-h-screen p-2">
-			<div className={cn(activityPanelResponsive)}>
-				<ActivityPanel />
-			</div>
+			<VisibilityWrapper isHide={session.status !== "authenticated"}>
+				<div className={cn(activityPanelResponsive)}>
+					<ActivityPanel />
+				</div>
+			</VisibilityWrapper>
 			<div className={cn(pageResponsive)}>{children}</div>
 		</div>
 	);
