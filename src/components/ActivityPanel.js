@@ -112,11 +112,11 @@ export function UserCard({ user }) {
 			className="justify-start [&_svg]:size-5 p-2"
 			asChild
 		>
-			<Link className="flex grow space-x-2" href={`/${user?.email}`}>
+			<Link className="flex grow space-x-2" href={`/channel/${user?.username}`}>
 				<UserIcon className="shrink-0" />
 				<div className="flex flex-col">
 					<div className="font-medium leading-none tracking-tight">
-						{user?.name}
+						{user?.username}
 					</div>
 					<div className="text-xs text-muted-foreground">{user?.email}</div>
 				</div>
