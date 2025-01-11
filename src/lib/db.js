@@ -64,3 +64,12 @@ export async function getGlobalMessages() {
 
 	return initialGlobalMessages;
 }
+
+export async function getUserByUsername(username) {
+	const iusers = await db
+		.select()
+		.from(schema.users)
+		.where(orm.eq(schema.users.username, username));
+	const [user] = iusers;
+	return user;
+}
