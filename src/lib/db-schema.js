@@ -23,7 +23,7 @@ export const globalMsgIdSeq = pgSequence("global_msg_id_seq", {
 });
 
 export const globalMessages = pgTable("global_messages", {
-	id: integer("id")
+	ringId: integer("ring_id")
 		.primaryKey()
 		.default(sql`nextval('global_msg_id_seq')`),
 	createdAt: timestamp("created_at").notNull().defaultNow(),
