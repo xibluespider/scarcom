@@ -10,6 +10,7 @@ export default function useGlobalChannelEvents() {
 	const [initialGlobalMessages, setInitialGlobalMessages] = useState([]);
 	const [initialGlobalMessagesLoading, setInitialGlobalMessagesLoading] =
 		useState(false);
+	const [deleteMessageLoading, setDeleteMessageLoading] = useState(false);
 
 	const channelName = "global_channel";
 	let globalMessages = [];
@@ -53,16 +54,43 @@ export default function useGlobalChannelEvents() {
 
 		try {
 			const response = await fetch("/api/globalChannel", params);
-
 			if (!response.ok) {
 				toast(response.message);
 				return;
 			}
 		} catch (error) {
 			console.error("ERROR:hooks/useGlobalChannelEvents:sendMessageToGlobal");
-
 			toast("Error. Please try again later.");
 		}
+	};
+
+	const deleteGlobalMessage = async (messageId) => {
+		setDeleteMessageLoading(true);
+		try {
+			const response = await fetch("/api/globalChannel", {
+				method: "DELETE",
+				body: JSON.stringify({ messageId }),
+			});
+
+			if (!response.ok) {
+				console.error("Failed to delete global message:", response);
+				toast(response.message);
+			} else {
+				setInitialGlobalMessages((prevMessages) =>
+					prevMessages.filter((msg) => msg.messageId !== messageId)
+				);
+			}
+		} catch (error) {
+			console.error("ERROR:hooks/useGlobalChannelEvents:deleteGlobalMessage");
+			toast("Error. Please try again later.");
+		} finally {
+			setDeleteMessageLoading(false);
+		}
+	};
+
+	const handleGlobalMessageDeleteEvent = async (messageId) => {
+		console.log(messageId);
+		await deleteGlobalMessage(messageId);
 	};
 
 	const handleGlobalMessageFormSubmitEvent = async (e) => {
@@ -85,6 +113,8 @@ export default function useGlobalChannelEvents() {
 		initialGlobalMessagesLoading,
 		initialGlobalMessages,
 		globalMessages,
+		deleteMessageLoading,
 		handleGlobalMessageFormSubmitEvent,
+		handleGlobalMessageDeleteEvent,
 	};
 }
