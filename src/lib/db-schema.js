@@ -26,7 +26,11 @@ export const globalMessages = pgTable("global_messages", {
 	ringId: integer("ring_id")
 		.primaryKey()
 		.default(sql`nextval('global_msg_id_seq')`),
-	createdAt: timestamp("created_at").notNull().defaultNow(),
+
+	messageId: uuid("message_id").notNull(),
+
 	userId: uuid("user_id").references(() => users.id),
 	message: text("message").notNull(),
+
+	createdAt: timestamp("created_at").notNull().defaultNow(),
 });
