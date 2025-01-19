@@ -27,7 +27,9 @@ export default function Page() {
 		initialGlobalMessagesLoading,
 		initialGlobalMessages,
 		globalMessages,
+		deleteMessageLoading,
 		handleGlobalMessageFormSubmitEvent,
+		handleGlobalMessageDeleteEvent,
 	} = useGlobalChannelEvents();
 
 	if (session.status === "loading") return <LoadingPage />;
@@ -52,10 +54,26 @@ export default function Page() {
 				<ScrollArea className="h-full p-1 border rounded-lg">
 					<div className="flex flex-col space-y-2 px-0.5">
 						{initialGlobalMessages?.map((payload, index) => (
-							<Message key={index} payload={payload} />
+							<Message
+								key={index}
+								payload={payload}
+								onDelete={() =>
+									handleGlobalMessageDeleteEvent(payload.messageId)
+								}
+								isDeleteLoading={deleteMessageLoading}
+								session={session}
+							/>
 						))}
 						{globalMessages?.map((payload, index) => (
-							<Message key={index} payload={payload} />
+							<Message
+								key={index}
+								payload={payload}
+								onDelete={() =>
+									handleGlobalMessageDeleteEvent(payload.messageId)
+								}
+								isDeleteLoading={deleteMessageLoading}
+								session={session}
+							/>
 						))}
 					</div>
 				</ScrollArea>
