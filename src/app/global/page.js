@@ -11,6 +11,7 @@ import {
 	Globe as GlobeIcon,
 	SendHorizonal as SendIcon,
 	Loader2 as LoadingIcon,
+	ChevronDown as DownIcon,
 } from "lucide-react";
 
 import LoadingPage from "@/app/loading";
@@ -19,6 +20,7 @@ import Message from "@/components/Message";
 import { VisibilityWrapper } from "@/lib/utils";
 
 import useGlobalChannelEvents from "@/hooks/useGlobalChannelEvents";
+import useGlobalScrollEvents from "@/hooks/useGlobalScrollEvents";
 
 export default function Page() {
 	const session = useSession();
@@ -31,6 +33,11 @@ export default function Page() {
 		handleGlobalMessageFormSubmitEvent,
 		handleGlobalMessageDeleteEvent,
 	} = useGlobalChannelEvents();
+
+	const { containerRef, scrollToBottom, showDownIcon } = useGlobalScrollEvents(
+		initialGlobalMessages,
+		globalMessages
+	);
 
 	if (session.status === "loading") return <LoadingPage />;
 
@@ -51,7 +58,10 @@ export default function Page() {
 			</VisibilityWrapper>
 
 			<VisibilityWrapper isHide={initialGlobalMessagesLoading}>
-				<ScrollArea className="h-full p-1 border rounded-lg">
+				<ScrollArea
+					className="h-full p-1 border rounded-lg"
+					viewportRef={containerRef}
+				>
 					<div className="flex flex-col space-y-2 px-0.5">
 						{initialGlobalMessages?.map((payload, index) => (
 							<Message
@@ -76,6 +86,16 @@ export default function Page() {
 							/>
 						))}
 					</div>
+					<VisibilityWrapper isHide={!showDownIcon}>
+						<Button
+							className="absolute right-3 bottom-2"
+							size="icon"
+							variant="outline"
+							onClick={scrollToBottom}
+						>
+							<DownIcon />
+						</Button>
+					</VisibilityWrapper>
 				</ScrollArea>
 			</VisibilityWrapper>
 
