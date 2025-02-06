@@ -1,63 +1,65 @@
-import { useState, useEffect, useRef } from "react";
-
-import { useSession } from "next-auth/react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 
-export default function useChannelEvents(username) {
-	const [userCheckIsLoading, setIsUserCheckIsLoading] = useState(true);
-	const session = useSession();
+const fetchChannelId = async (username, channelName) => {
+	const url = new URL("/api/channel", window.location.origin);
+	url.searchParams.append("username", username);
+	url.searchParams.append("channelName", channelName);
+
+	const response = await fetch(url);
+	const data = await response.json();
+	return data;
+};
+
+export default function useChannelEvents(channelName) {
 	const router = useRouter();
 
-	const effectHasRun = useRef(false);
+	const session = useSession();
 
-	const useChannelEventsEffect = () => {
-		if (session.status === "loading") return;
+	const [channelId, setChannelId] = useState("");
+	const [isChannelLoading, setIsChannelLoading] = useState(true);
 
-		if (session.data?.user?.username === username) {
+	const channelEffect = async () => {
+		if (session.status == "loading") return;
+
+		const username = session.data.user.username;
+
+		if (username == channelName) {
 			router.replace("/");
 			return;
 		}
 
-		if (session.status === "authenticated" && !effectHasRun.current) {
-			isUserExistCheckEffect();
-			effectHasRun.current = true;
-		}
-	};
-
-	const isUserExistCheckEffect = async () => {
-		setIsUserCheckIsLoading(true);
-
-		console.log("invoked: isUserExistCheckEffect");
-
-		const url = new URL("/api/isUserExist/", window.location.origin);
-		url.searchParams.append("usernameQuery", username);
-
-		let response = null;
 		try {
-			response = await fetch(url);
+			const response = await fetchChannelId(username, channelName);
 
 			if (!response.ok) {
-				toast("Internal server error. Please try again later");
+				let message = "Internal server error. Please try again later.";
+				message = response?.message ? response.message : message;
+
+				toast(message);
 				router.replace("/");
+
 				return;
 			}
 
-			response = await response.json();
-
-			if (response?.data === false) {
-				toast("User not found");
-				router.replace("/");
-				return;
-			}
+			setChannelId((prev) => response.channelId);
+			setIsChannelLoading((prev) => false);
 		} catch (error) {
 			toast("Error. Please try again later");
-		} finally {
-			setIsUserCheckIsLoading(false);
+			router.replace("/");
+			return;
 		}
 	};
 
-	useEffect(useChannelEventsEffect, [session]);
+	useEffect(() => {
+		channelEffect();
+	}, [session.status, channelName]);
 
-	return { session, userCheckIsLoading };
+	return {
+		isChannelIdLoading: isChannelLoading,
+		channelId,
+		session,
+	};
 }
