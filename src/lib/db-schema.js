@@ -5,7 +5,9 @@ import {
 	text,
 	timestamp,
 	uuid,
+	primaryKey,
 } from "drizzle-orm/pg-core";
+
 import { sql } from "drizzle-orm";
 
 export const users = pgTable("users", {
@@ -33,4 +35,45 @@ export const globalMessages = pgTable("global_messages", {
 	message: text("message").notNull(),
 
 	createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const channels = pgTable("channels", {
+	id: uuid("id").primaryKey().defaultRandom(),
+	createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const channelParticipants = pgTable(
+	"channel_participants",
+	{
+		channelId: uuid("channel_id")
+			.notNull()
+			.references(() => channels.id),
+		userId: uuid("user_id")
+			.notNull()
+			.references(() => users.id),
+	},
+	(table) => {
+		return [
+			{
+				pk: primaryKey({
+					columns: [table.channelId, table.userId],
+				}),
+			},
+		];
+	}
+);
+
+export const messages = pgTable("messages", {
+	id: uuid("id").primaryKey().defaultRandom(),
+
+	channelId: uuid("channel_id")
+		.notNull()
+		.references(() => channels.id),
+
+	userId: uuid("user_id")
+		.notNull()
+		.references(() => users.id),
+
+	message: text("message").notNull(),
+	createdAt: timestamp("created_at").defaultNow(),
 });
