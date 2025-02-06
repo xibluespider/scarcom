@@ -26,20 +26,17 @@ export default function Page() {
 	const session = useSession();
 
 	const {
-		initialGlobalMessagesLoading,
-		initialGlobalMessages,
-		globalMessages,
-		deleteMessageLoading,
-		handleGlobalMessageFormSubmitEvent,
+		isChannelLoading,
+		messages,
+		isMessageDeleteLoading,
 		handleGlobalMessageDeleteEvent,
+		handleGlobalMessageFormSubmitEvent,
 	} = useGlobalChannelEvents();
 
-	const { containerRef, scrollToBottom, showDownIcon } = useGlobalScrollEvents(
-		initialGlobalMessages,
-		globalMessages
-	);
+	const { containerRef, scrollToBottom, showDownIcon } =
+		useGlobalScrollEvents(messages);
 
-	if (session.status === "loading") return <LoadingPage />;
+	if (session.status === "loading" || isChannelLoading) return <LoadingPage />;
 
 	return (
 		<div className="grow flex flex-col space-y-2">
@@ -51,41 +48,31 @@ export default function Page() {
 				</div>
 			</div>
 
-			<VisibilityWrapper isHide={!initialGlobalMessagesLoading}>
+			<VisibilityWrapper isHide={!isChannelLoading}>
 				<div className="border rounded-lg p-1 grow flex items-center justify-center">
 					<LoadingIcon className="animate-spin size-10" />
 				</div>
 			</VisibilityWrapper>
 
-			<VisibilityWrapper isHide={initialGlobalMessagesLoading}>
+			<VisibilityWrapper isHide={isChannelLoading}>
 				<ScrollArea
 					className="h-full p-1 border rounded-lg"
 					viewportRef={containerRef}
 				>
 					<div className="flex flex-col space-y-2 px-0.5">
-						{initialGlobalMessages?.map((payload, index) => (
+						{messages?.map((payload, index) => (
 							<Message
 								key={index}
 								payload={payload}
 								onDelete={() =>
 									handleGlobalMessageDeleteEvent(payload.messageId)
 								}
-								isDeleteLoading={deleteMessageLoading}
-								session={session}
-							/>
-						))}
-						{globalMessages?.map((payload, index) => (
-							<Message
-								key={index}
-								payload={payload}
-								onDelete={() =>
-									handleGlobalMessageDeleteEvent(payload.messageId)
-								}
-								isDeleteLoading={deleteMessageLoading}
+								isDeleteLoading={isMessageDeleteLoading}
 								session={session}
 							/>
 						))}
 					</div>
+
 					<VisibilityWrapper isHide={!showDownIcon}>
 						<Button
 							className="absolute right-3 bottom-2"

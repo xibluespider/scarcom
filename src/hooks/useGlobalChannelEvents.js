@@ -1,46 +1,43 @@
 import { useState, useEffect } from "react";
 
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 import usePusherChannel from "./usePusherChannel";
 
 export default function useGlobalChannelEvents() {
-	const session = useSession();
-
-	const [initialGlobalMessages, setInitialGlobalMessages] = useState([]);
-	const [initialGlobalMessagesLoading, setInitialGlobalMessagesLoading] =
-		useState(false);
-	const [deleteMessageLoading, setDeleteMessageLoading] = useState(false);
-
 	const channelName = "global_channel";
-	let globalMessages = [];
-	globalMessages = usePusherChannel(channelName);
 
-	const getGlobalMessages = async () => {
-		setInitialGlobalMessagesLoading((prev) => true);
+	const session = useSession();
+	const router = useRouter();
+
+	const [isChannelLoading, setIsChannelLoading] = useState(true);
+	const [messages, setMessages] = useState([]);
+
+	const [isMessageDeleteLoading, setIsDeleteMessageLoading] = useState(false);
+
+	const getInitialMessages = async () => {
+		console.log("INVOKED:getInitialMessages");
 
 		try {
 			const response = await fetch("/api/globalChannel");
 
 			if (!response.ok) {
 				toast(response.message);
-
-				setInitialGlobalMessagesLoading((prev) => false);
+				router.replace("/");
 				return;
 			}
 
 			const data = await response.json();
-			setInitialGlobalMessages((prev) => data.messages);
+			setMessages((prev) => data.messages);
 		} catch (error) {
-			console.error("ERROR:hooks/useGlobalChannelEvents:getGlobalMessages");
-
 			toast("Error. Please try again later.");
+			console.error("ERROR:hooks/useGlobalChannelEvents:getGlobalMessages");
 		}
-
-		setInitialGlobalMessagesLoading((prev) => false);
 	};
 
 	const sendMessageToGlobal = async (message) => {
+		console.log(message);
 		const payload = {
 			userId: session.data.user.id,
 			username: session.data.user.username,
@@ -63,9 +60,8 @@ export default function useGlobalChannelEvents() {
 			toast("Error. Please try again later.");
 		}
 	};
-
 	const deleteGlobalMessage = async (messageId) => {
-		setDeleteMessageLoading(true);
+		setIsDeleteMessageLoading(true);
 		try {
 			const response = await fetch("/api/globalChannel", {
 				method: "DELETE",
@@ -76,15 +72,12 @@ export default function useGlobalChannelEvents() {
 				console.error("Failed to delete global message:", response);
 				toast(response.message);
 			} else {
-				setInitialGlobalMessages((prevMessages) =>
-					prevMessages.filter((msg) => msg.messageId !== messageId)
-				);
 			}
 		} catch (error) {
-			console.error("ERROR:hooks/useGlobalChannelEvents:deleteGlobalMessage");
 			toast("Error. Please try again later.");
+			console.error("ERROR:hooks/useGlobalChannelEvents:deleteGlobalMessage");
 		} finally {
-			setDeleteMessageLoading(false);
+			setIsDeleteMessageLoading(false);
 		}
 	};
 
@@ -105,16 +98,41 @@ export default function useGlobalChannelEvents() {
 		await sendMessageToGlobal(globalMessage);
 	};
 
+	const addMessage = (message) => {
+		console.log("INVOKED:addMessage");
+		console.log(message);
+		setMessages((prev) => [...prev, message]);
+	};
+
+	const deleteMessage = ({ messageId }) => {
+		console.log("INVOKED:deleteMessage");
+		console.log(messageId);
+		setMessages((prevMessages) =>
+			prevMessages.filter((msg) => msg.messageId !== messageId)
+		);
+	};
+
 	useEffect(() => {
-		getGlobalMessages();
-	}, []);
+		if (session.status == "loading") return;
+		setIsChannelLoading((prev) => true);
+
+		getInitialMessages();
+		console.log("getInitialMessages:loaded");
+
+		const { pusherRef } = usePusherChannel("global_channel");
+		console.log("pusherRef received");
+		pusherRef.bind("new_message", addMessage);
+		pusherRef.bind("delete_message", deleteMessage);
+
+		setIsChannelLoading((prev) => false);
+		return () => pusherRef.unsubscribe(channelName);
+	}, [session.status]);
 
 	return {
-		initialGlobalMessagesLoading,
-		initialGlobalMessages,
-		globalMessages,
-		deleteMessageLoading,
-		handleGlobalMessageFormSubmitEvent,
+		isChannelLoading,
+		messages,
+		isMessageDeleteLoading,
 		handleGlobalMessageDeleteEvent,
+		handleGlobalMessageFormSubmitEvent,
 	};
 }
