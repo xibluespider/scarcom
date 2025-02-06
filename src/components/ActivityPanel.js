@@ -34,7 +34,7 @@ export default function ActivityPanel() {
 	} = useSearchEvents();
 
 	return (
-		<div className="grow flex flex-col space-y-2">
+		<div className="min-w-[250px] grow flex flex-col space-y-2">
 			<UserInfoCard session={session} className="border rounded-lg p-2" />
 
 			<Button variant="outline" className="justify-start px-3" asChild>
