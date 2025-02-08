@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import useScrollEvents from "./useScrollEvents";
 
-export default function useGlobalScrollEvents(messages) {
+export default function useChannelScrollEvents(messages) {
 	const { containerRef, scrollToBottom, showDownIcon, scrollInfo } =
 		useScrollEvents();
 
