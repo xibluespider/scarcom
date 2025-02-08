@@ -20,7 +20,7 @@ import Message from "@/components/Message";
 import { VisibilityWrapper } from "@/lib/utils";
 
 import useGlobalChannelEvents from "@/hooks/useGlobalChannelEvents";
-import useGlobalScrollEvents from "@/hooks/useGlobalScrollEvents";
+import useChannelScrollEvents from "@/hooks/useChannelScrollEvents";
 
 export default function Page() {
 	const session = useSession();
@@ -34,7 +34,7 @@ export default function Page() {
 	} = useGlobalChannelEvents();
 
 	const { containerRef, scrollToBottom, showDownIcon } =
-		useGlobalScrollEvents(messages);
+		useChannelScrollEvents(messages);
 
 	if (session.status === "loading" || isChannelLoading) return <LoadingPage />;
 

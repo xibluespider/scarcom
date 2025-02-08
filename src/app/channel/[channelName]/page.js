@@ -18,7 +18,7 @@ import LoadingPage from "@/app/loading";
 
 import useChannelEvents from "@/hooks/useChannelEvents";
 import useChannelMessageEvents from "@/hooks/useChannelMessageEvents";
-import useGlobalScrollEvents from "@/hooks/useGlobalScrollEvents";
+import useChannelScrollEvents from "@/hooks/useChannelScrollEvents";
 import ChannelMessage from "@/components/ChannelMessage";
 
 export default function Page({ params }) {
@@ -36,7 +36,7 @@ export default function Page({ params }) {
 	} = useChannelMessageEvents(channelId);
 
 	const { containerRef, scrollToBottom, showDownIcon } =
-		useGlobalScrollEvents(messages);
+		useChannelScrollEvents(messages);
 
 	if (session.status === "loading" || isChannelIdLoading || isChannelLoading)
 		return <LoadingPage />;
