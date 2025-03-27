@@ -12,6 +12,9 @@ export default function useChannelMessageEvents(channelId) {
 	const [messages, setMessages] = useState([]);
 	const [isMessageDeleteLoading, setIsDeleteMessageLoading] = useState(false);
 
+	const channelName = `channel_${channelId}`;
+	const { pusherRef } = usePusherChannel(channelName);
+
 	const getInitialMessages = async () => {
 		console.log("INVOKED:useChannelMessageEvents/getInitialMessages");
 
@@ -128,10 +131,6 @@ export default function useChannelMessageEvents(channelId) {
 
 		getInitialMessages();
 		console.log("getInitialMessages:loaded");
-
-		const channelName = `channel_${channelId}`;
-		const { pusherRef } = usePusherChannel(channelName);
-		console.log("pusherRef received");
 
 		pusherRef.bind("new_message", addMessage);
 		pusherRef.bind("delete_message", deleteMessage);

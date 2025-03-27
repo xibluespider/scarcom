@@ -16,6 +16,8 @@ export default function useGlobalChannelEvents() {
 
 	const [isMessageDeleteLoading, setIsDeleteMessageLoading] = useState(false);
 
+	const { pusherRef } = usePusherChannel("global_channel");
+
 	const getInitialMessages = async () => {
 		console.log("INVOKED:getInitialMessages");
 
@@ -119,8 +121,6 @@ export default function useGlobalChannelEvents() {
 		getInitialMessages();
 		console.log("getInitialMessages:loaded");
 
-		const { pusherRef } = usePusherChannel("global_channel");
-		console.log("pusherRef received");
 		pusherRef.bind("new_message", addMessage);
 		pusherRef.bind("delete_message", deleteMessage);
 
